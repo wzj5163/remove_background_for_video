@@ -20,3 +20,5 @@ To remove background of video, in order to play on keynote, I try many methods, 
 17. Use ffmpeg to create [transparent scrolling credits](https://www.youtube.com/watch?v=XlRnn2u44aA).
 18. Use ffmpeg to convert [pngs to a mp4](https://www.youtube.com/watch?v=thDma0lO0U8), codes are `ffmpeg -r 10 -i network_%03d.png -pix_fmt yuv420p my1.mp4`. 
 19. [Chinese tutorials](https://www.youtube.com/watch?v=qf90-IeE4q8) for how to install and use ffmpeg,  very clear. 
+20. Encoder [Apple ProRes](https://www.quora.com/Do-MOV-files-support-transparency) supports alpha channel and can play on Quicktime, codes are`ffmpeg -r 10 -i network_%03d.png -c:v prores:v -profile 4  -pix_fmt yuv444p10  my1.mov -y`. or `ffmpeg -r 10 -i network_%03d.png -c:v prores_ks -profile:v 4  -pix_fmt yuv444p10  my1.mov -y
+`. Not transparent.
