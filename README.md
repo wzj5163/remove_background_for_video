@@ -22,3 +22,9 @@ To remove background of video, in order to play on keynote, I try many methods, 
 19. [Chinese tutorials](https://www.youtube.com/watch?v=qf90-IeE4q8) for how to install and use ffmpeg,  very clear. 
 20. Encoder [Apple ProRes](https://www.quora.com/Do-MOV-files-support-transparency) supports alpha channel and can play on Quicktime, codes are`ffmpeg -r 10 -i network_%03d.png -c:v prores:v -profile 4  -pix_fmt yuv444p10  my1.mov -y`. or `ffmpeg -r 10 -i network_%03d.png -c:v prores_ks -profile:v 4  -pix_fmt yuv444p10  my1.mov -y
 `. Not transparent.
+
+Create a background `ffmpeg -loop 1 -i background.png -c:v libx264 -t 17 -pix_fmt yuv420p -vf scale=1320:640 my2.mp4 -y`.
+`ffmpeg -i my2.mp4 -pattern_type glob -i network_%03d.png \
+-filter_complex "[1:v][0:v]scale2ref=iw:ih[ovr][base]; \
+ [ovr][base]blend=all_mode='overlay':all_opacity=0.7[v]"
+-map [v] my2_1.mp4 -y`.
