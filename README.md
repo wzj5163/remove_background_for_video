@@ -13,7 +13,11 @@ Here is the final methods I use:
 - Remark: frame rate = 10
 - Useful resources: [just codes](https://www.youtube.com/watch?v=-rbxytl9ANY), [PNG+PNGs](https://www.youtube.com/watch?v=hXQU56dgqmc)
 
-## Step 4: Add subtitles:
+## Step 4: create subtitle
+- Use R to derive start date and end date of each time window and write in txt.
+- Use python to read txt and write SRT file as subtitle.
+
+## Step 5: Add subtitles:
 - Codes `ffmpeg -i my2_1.mp4 -vf "subtitles=timewindow.srt" -y my2_2.mp4`.
 - Useful refrence: [Video subtitles using FFMPEG](https://www.youtube.com/watch?v=uxMPUoueYHE).
 
