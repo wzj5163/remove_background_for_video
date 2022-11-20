@@ -1,6 +1,17 @@
 # remove_background_for_video
 To remove background of video, in order to play on keynote, I try many methods,  from ffmpeg, website online tools. to iMovie.
 
+Here is the final methods I use:
+Step1: screenshot of kenote as background 
+- Input: png + pngs
+- Codes: `ffmpeg -i background.png -r 10 -i network_%03d.png -filter_complex "[0]scale=2180:1120, overlay=560:30" my2_1.mp4 -y`, PERFECT!.
+- Useful resources: [just codes](https://www.youtube.com/watch?v=-rbxytl9ANY), [PNG+PNGs](https://www.youtube.com/watch?v=hXQU56dgqmc)
+
+Add subtitles:
+- Codes `ffmpeg -i my2_1.mp4 -vf "subtitles=timewindow.srt" -y my2_2.mp4`.
+
+
+
 1. Video tutorial for transparent website video for a [golf ball](https://www.youtube.com/watch?v=C67S5x7QWzc) on Mac. Output is mov. Tool: Adobe after effects(not free), Shutter Encoder. The very important step is done by Adobe after effects.
 2. Use ffmpeg to replace [green background](https://www.google.com/search?client=safari&rls=en&q=Making+Transparent+Video+with+FFMPEG+by+Chroma+Keying+%7C+Tutorial&ie=UTF-8&oe=UTF-8#fpstate=ive&vld=cid:444a68c3,vid:0tA4fauFykw) with transparent background.
 3. Use [iMovie](https://www.youtube.com/watch?v=KZxPHQDRiF4) to combine video and png, replace green background with selected png.
@@ -41,6 +52,3 @@ Add pngs to video:
 
 
 
-
-- Input: png + pngs
-- Codes: `- `ffmpeg -i background.png -r 10 -i network_%03d.png -filter_complex "[0]scale=2180:1120, overlay=560:30" my2_1.mp4 -y` PERFECT!`.
