@@ -33,3 +33,14 @@ Add pngs to video:
 - `ffmpeg -i my2.mp4 -i network_001.png -filter_complex "[1]scale=50:50;[0:v][1:v]overlay=50:50:enable='between(t,0,1)'" -pix_fmt yuv420p -c:a copy my2_1.mp4 -y`, scaled, but awful.
 - `ffmpeg -i background.png -i network_%03d.png -filter_complex "overlay" my2_1.mp4 -y`, works but no scaled, thanks to [this](https://www.youtube.com/watch?v=hXQU56dgqmc).
 - `ffmpeg -i background.png -r 10 -i network_%03d.png -filter_complex "overlay" my2_1.mp4 -y`, change frame rate, works but no scaled.
+- `ffmpeg -i background.png -r 10 -i network_%03d.png -filter_complex "[1:v]scale=1080:1080, overlay" my2_1.mp4 -y` scale background, background on the top
+- `ffmpeg -i background.png -r 10 -i network_%03d.png -filter_complex "[0:v]scale=1080:1080, overlay=50:50" my2_1.mp4 -y` scale pngs, pngs on the top
+- `ffmpeg -i background.png -r 10 -i network_%03d.png -filter_complex "[0:v]scale=1080:1080, overlay" my2_1.mp4 -y` scale pngs, pngs on the top
+- `ffmpeg -i background.png -r 10 -i network_%03d.png -filter_complex "[0]scale=2180:1120, overlay=560:30" my2_1.mp4 -y` PERFECT!
+- `ffmpeg -i background.png -r 10 -i network_%03d.png -filter_complex "[0:v]scale=720:740, overlay=(main_w-overlay_w)/4:(main_h-overlay_h)/4" my2_1.mp4 -y`, no movie
+
+
+
+
+- Input: png + pngs
+- Codes: `- `ffmpeg -i background.png -r 10 -i network_%03d.png -filter_complex "[0]scale=2180:1120, overlay=560:30" my2_1.mp4 -y` PERFECT!`.
