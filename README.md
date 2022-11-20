@@ -23,8 +23,13 @@ To remove background of video, in order to play on keynote, I try many methods, 
 20. Encoder [Apple ProRes](https://www.quora.com/Do-MOV-files-support-transparency) supports alpha channel and can play on Quicktime, codes are`ffmpeg -r 10 -i network_%03d.png -c:v prores:v -profile 4  -pix_fmt yuv444p10  my1.mov -y`. or `ffmpeg -r 10 -i network_%03d.png -c:v prores_ks -profile:v 4  -pix_fmt yuv444p10  my1.mov -y
 `. Not transparent.
 
-Create a background `ffmpeg -loop 1 -i background.png -c:v libx264 -t 17 -pix_fmt yuv420p -vf scale=1320:640 my2.mp4 -y`.
-`ffmpeg -i my2.mp4 -pattern_type glob -i network_%03d.png \
--filter_complex "[1:v][0:v]scale2ref=iw:ih[ovr][base]; \
- [ovr][base]blend=all_mode='overlay':all_opacity=0.7[v]"
--map [v] my2_1.mp4 -y`.
+Create a background [using one png](https://stackoverflow.com/questions/25891342/creating-a-video-from-a-single-image-for-a-specific-duration-in-ffmpeg) `ffmpeg -loop 1 -i background.png -c:v libx264 -t 17 -pix_fmt yuv420p -vf scale=1320:640 my2.mp4 -y`.
+
+Add pngs to video:
+`ffmpeg -i my2.mp4 -i network_001.png -filter_complex "[0:v][1:v]overlay" -vcodec libx264 my2_1.mp4 -y`. png too big
+`ffmpeg -i my2.mp4 -r 10 -i network_%03d.png -filter_complex "[0:v][1:v]overlay" -vcodec libx264 my2_1.mp4 -y`. only 1 png
+`ffmpeg -i my2.mp4 -framerate 10 -pattern_type glob -i "network_%03d.png" -filter_complex "[1:v][0:v]scale2ref=iw:ih[ovr]; [ovr][0:v]blend=all_mode='overlay':all_opacity=0.7[v]" -map [v] my2_1.mp4 -y` as in [here](https://superuser.com/questions/1050297/how-can-i-overlay-pngs-with-transparency-over-a-video-each-png-should-cover-on).
+`ffmpeg -i my2.mp4 -i network_001.png -filter_complex "[0:v][1:v]overlay=50:50:enable='between(t,0,1)'" -pix_fmt yuv420p -c:a copy my2_1.mp4 -y` as in [Youtube](https://www.youtube.com/watch?v=dGFXAk-KClA). Time in (0,1), scale not solved.
+`ffmpeg -i my2.mp4 -i network_001.png -filter_complex "[1]scale=50:50;[0:v][1:v]overlay=50:50:enable='between(t,0,1)'" -pix_fmt yuv420p -c:a copy my2_1.mp4 -y`, scaled, but awful.
+`ffmpeg -i background.png -i network_%03d.png -filter_complex "overlay" my2_1.mp4 -y`, works but no scaled, thanks to [this](https://www.youtube.com/watch?v=hXQU56dgqmc).
+`ffmpeg -i background.png -r 10 -i network_%03d.png -filter_complex "overlay" my2_1.mp4 -y`, change frame rate, works but no scaled.
